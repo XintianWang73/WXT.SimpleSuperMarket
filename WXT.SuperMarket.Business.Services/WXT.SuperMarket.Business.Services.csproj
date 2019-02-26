@@ -42,12 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomerService.cs" />
+    <Compile Include="MarketService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WXT.SuperMarket.Data.Entities\WXT.SuperMarket.Data.Entities.csproj">
       <Project>{ff4922a2-21f9-40b1-b905-8f88c8400b7f}</Project>
       <Name>WXT.SuperMarket.Data.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WXT.SuperMarket.Data.Repositories\WXT.SuperMarket.Data.Repositories.csproj">
+      <Project>{10548002-87bd-4507-aa7c-7cc733e9bf91}</Project>
+      <Name>WXT.SuperMarket.Data.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

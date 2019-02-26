@@ -8,5 +8,7 @@ namespace WXT.SuperMarket.Data.Entities
 {
     public class ShoppingCart
     {
+        public int CustomerId { get; set; }
+        public List<ProductItem> ItemList { get; set; } = new List<ProductItem>();
     }
 }

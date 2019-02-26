@@ -41,8 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomerRepository.cs" />
+    <Compile Include="InMemoryCustomerRepository.cs" />
+    <Compile Include="InMemoryMarketRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WXT.SuperMarket.Data.Entities\WXT.SuperMarket.Data.Entities.csproj">
+      <Project>{ff4922a2-21f9-40b1-b905-8f88c8400b7f}</Project>
+      <Name>WXT.SuperMarket.Data.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
