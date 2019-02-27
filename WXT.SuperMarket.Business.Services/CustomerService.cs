@@ -1,6 +1,7 @@
 ﻿namespace WXT.SuperMarket.Business.Services
 {
     using System;
+    using System.Linq;
     using WXT.SuperMarket.Data.Entities;
     using WXT.SuperMarket.Data.Repository;
 
@@ -163,9 +164,16 @@
         /// <summary>
         /// The CheckOut
         /// </summary>
-        public void CheckOut()
+        /// <returns>The <see cref="Receipt"/></returns>
+        public Receipt CheckOut()
         {
             CheckLoginStatus();
+            var item = _myShoppingCart.ItemList.FirstOrDefault(i => i.Count > (_marketRepository.GetStock(i.ProductId)?.Count ?? 0));
+            if (item != null)
+            {
+                throw new InvalidOperationException($"There is no enough product in stock.");
+            }
+            return _customerRepository.CheckOut(_myShoppingCart);
         }
     }
 }
