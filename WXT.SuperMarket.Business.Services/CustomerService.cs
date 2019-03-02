@@ -1,7 +1,10 @@
 ﻿namespace WXT.SuperMarket.Business.Services
 {
     using System;
+    using System.IO;
     using System.Linq;
+    using System.Text;
+    using System.Threading;
     using WXT.SuperMarket.Data.Entities;
     using WXT.SuperMarket.Data.Repository;
 
@@ -13,17 +16,48 @@
         /// <summary>
         /// Defines the _customerRepository
         /// </summary>
-        private readonly InMemoryCustomerRepository _customerRepository = new InMemoryCustomerRepository();
+        private readonly ICustomerRepository _customerRepository = new JsonCustomerRepository();
 
         /// <summary>
         /// Defines the _marketRepository
         /// </summary>
-        private readonly InMemoryMarketRepository _marketRepository = new InMemoryMarketRepository();
+        private readonly IMarketRepository _marketRepository = new JsonMarketRepository();
 
         /// <summary>
         /// Defines the _myShoppingCart
         /// </summary>
-        private ShoppingCart _myShoppingCart = null;
+        private int ShoppingCartId { get; set; }
+
+        private FileStream LockFile(string fileName)
+        {
+            while (true)
+            {
+                try
+                {
+                    return File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+            }
+        }
+
+        private void UnlockFile(FileStream fileStream)
+        {
+            while (true)
+            {
+                try
+                {
+                    fileStream.Close();
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+            }
+        }
 
         /// <summary>
         /// The RegisterNewCustomer
@@ -31,7 +65,7 @@
         /// <param name="userName">The userName<see cref="string"/></param>
         /// <param name="passWord">The passWord<see cref="string"/></param>
         /// <returns>The <see cref="Customer"/></returns>
-        public Customer RegisterNewCustomer(string userName, string passWord)
+        public string RegisterNewCustomer(string userName, string passWord)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -41,8 +75,10 @@
             {
                 throw new ArgumentNullException("password", "Password cannot be null, enmpty or only white spaces.");
             }
+            var locker = LockFile("customer.lk");
             if (_customerRepository.FindCustomer(userName) != null)
             {
+                UnlockFile(locker);
                 throw new InvalidOperationException($"UserName {userName} has been used.");
             }
             var customer = new Customer
@@ -50,7 +86,12 @@
                 UserName = userName,
                 PassWord = passWord
             };
-            return _customerRepository.AddCustomer(customer);
+
+            var locker2 = LockFile("cart.lk");
+            var result = _customerRepository.AddCustomer(customer).ToString();
+            UnlockFile(locker2);
+            UnlockFile(locker);
+            return result;
         }
 
         /// <summary>
@@ -58,13 +99,16 @@
         /// </summary>
         /// <param name="userName">The userName<see cref="string"/></param>
         /// <param name="passWord">The passWord<see cref="string"/></param>
-        public void DeleteCustomer(string userName, string passWord)
+        public void DeleteCustomer()
         {
-            if (_myShoppingCart != null)
-            {
-                _customerRepository.DeleteCustomer(userName);
-                Logout();
-            }
+            CheckLoginStatus();
+            var id = ShoppingCartId;
+            Logout();
+            var locker = LockFile("customer.lk");
+            var locker2 = LockFile("cart.lk");
+            _customerRepository.DeleteCustomer(id);
+            UnlockFile(locker2);
+            UnlockFile(locker);
         }
 
         /// <summary>
@@ -86,7 +130,11 @@
 
             if (customer != null)
             {
-                _myShoppingCart = _customerRepository.FindShoppingCart(customer);
+                ShoppingCartId = customer.Id;
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot login with this username and password.");
             }
         }
 
@@ -95,7 +143,7 @@
         /// </summary>
         public void Logout()
         {
-            _myShoppingCart = null;
+            ShoppingCartId = 0;
         }
 
         /// <summary>
@@ -121,7 +169,10 @@
             {
                 throw new ArgumentOutOfRangeException("count", $"There is no enough product in stock. left {stock.Count}, need {count}");
             }
-            _customerRepository.AddToCart(_myShoppingCart, productId, count);
+
+            var locker = LockFile("cart.lk");
+            _customerRepository.AddToCart(ShoppingCartId, productId, count);
+            UnlockFile(locker);
         }
 
         /// <summary>
@@ -129,7 +180,7 @@
         /// </summary>
         /// <param name="productId">The productId<see cref="int"/></param>
         /// <param name="count">The count<see cref="int"/></param>
-        public void TakeFromCart(int productId, int count = 1)
+        public int TakeFromCart(int productId, int count = 1)
         {
             CheckLoginStatus();
 
@@ -137,7 +188,10 @@
             {
                 throw new ArgumentOutOfRangeException("count", "Count cannot less than 1.");
             }
-            _customerRepository.RemoveFromCart(_myShoppingCart, productId, count);
+            var locker = LockFile("cart.lk");
+            int result = _customerRepository.RemoveFromCart(ShoppingCartId, productId, count);
+            UnlockFile(locker);
+            return result;
         }
 
         /// <summary>
@@ -146,8 +200,9 @@
         public void ClearCart()
         {
             CheckLoginStatus();
-
-            _customerRepository.ClearCart(_myShoppingCart);
+            var locker = LockFile("cart.lk");
+            _customerRepository.ClearCart(ShoppingCartId);
+            UnlockFile(locker);
         }
 
         /// <summary>
@@ -155,7 +210,7 @@
         /// </summary>
         private void CheckLoginStatus()
         {
-            if (_myShoppingCart == null)
+            if (ShoppingCartId <= 0)
             {
                 throw new InvalidOperationException($"Customer needs login before other operations.");
             }
@@ -164,16 +219,41 @@
         /// <summary>
         /// The CheckOut
         /// </summary>
-        /// <returns>The <see cref="Receipt"/></returns>
-        public Receipt CheckOut()
+        /// <returns>The <see cref="string"/></returns>
+        public string CheckOut()
         {
             CheckLoginStatus();
-            var item = _myShoppingCart.ItemList.FirstOrDefault(i => i.Count > (_marketRepository.GetStock(i.ProductId)?.Count ?? 0));
+            var locker = LockFile("cart.lk");
+            var shoppingCart = _customerRepository.FindShoppingCart(ShoppingCartId);
+            if (shoppingCart.ItemList.Count == 0)
+            {
+                UnlockFile(locker);
+                throw new InvalidOperationException("There is no item in the shopping cart.");
+            }
+            var locker2 = LockFile("stock.lk");
+            var item = shoppingCart.ItemList.FirstOrDefault(i => i.Count > (_marketRepository.GetStock(i.ProductId)?.Count ?? 0));
             if (item != null)
             {
+                UnlockFile(locker2);
+                UnlockFile(locker);
                 throw new InvalidOperationException($"There is no enough product in stock.");
             }
-            return _customerRepository.CheckOut(_myShoppingCart);
+            var locker3 = LockFile("receipt.lk");
+            var result = _customerRepository.CheckOut(ShoppingCartId).ToString();
+            UnlockFile(locker3);
+            UnlockFile(locker2);
+            UnlockFile(locker);
+            return result;
+        }
+
+        /// <summary>
+        /// The FindAllProduct
+        /// </summary>
+        /// <param name="isOnlyInStock">The isOnlyInStock<see cref="bool"/></param>
+        /// <returns>The <see cref="string"/></returns>
+        public string FindAllProduct(bool isOnlyInStock)
+        {
+            return _marketRepository.FindAllProduct(isOnlyInStock);
         }
     }
 }

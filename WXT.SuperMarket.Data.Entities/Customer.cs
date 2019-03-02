@@ -29,5 +29,10 @@
         /// Gets or sets the PhoneNumber
         /// </summary>
         public string PhoneNumber { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id = {Id} UserName = {UserName} EmailAddress = {EmaiAddress} PhoneNumber = {PhoneNumber}";
+        }
     }
 }

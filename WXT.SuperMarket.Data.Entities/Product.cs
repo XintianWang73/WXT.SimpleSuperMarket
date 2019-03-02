@@ -24,5 +24,10 @@
         /// Gets or sets the Price
         /// </summary>
         public decimal Price { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id = {Id} Name = {Name} Description = \"{Description}\" Price = {Price}"; 
+        }
     }
 }

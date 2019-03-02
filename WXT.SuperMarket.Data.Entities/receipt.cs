@@ -35,7 +35,8 @@
         /// <returns>The <see cref="string"/></returns>
         public override string ToString()
         {
-            return $"Id = {Id} TransactionTime = {TransactionTime} ToalPrice = {TotalPrice}{Environment.NewLine}{string.Join(Environment.NewLine, ShoppingList.Select(s => s.ToString()))}";
+            return $"Id = {Id} TransactionTime = {TransactionTime} ToalPrice = {TotalPrice}{Environment.NewLine}" +
+                $"{string.Join(Environment.NewLine, ShoppingList.Select(s => s.ToString()))}";
         }
     }
 }

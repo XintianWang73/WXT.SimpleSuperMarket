@@ -33,10 +33,11 @@
         /// <summary>
         /// The ToString
         /// </summary>
+        /// <param name="mode">The mode<see cref="int"/>0 - brief, 1- detail</param>
         /// <returns>The <see cref="string"/></returns>
         public override string ToString()
         {
-            return $"Id = {Id}  Name = {Name} {Count} @ {Price}   {TotalPrice}";
+            return $"{Id} {Name} {Count} @ {Price}   {TotalPrice}";
         }
     }
 }

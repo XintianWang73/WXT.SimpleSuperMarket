@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10548002-87BD-4507-AA7C-7CC733E9BF91}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WXT.SuperMarket.Data.Repository</RootNamespace>
-    <AssemblyName>WXT.SuperMarket.Data.Repository</AssemblyName>
+    <ProjectGuid>{22560666-43BA-4467-9B87-9A6F6BC664F2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WXT.SuperMarket.UI.MarketConsoleApp</RootNamespace>
+    <AssemblyName>WXT.SuperMarket.UI.MarketConsoleApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,23 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICustomerRepository.cs" />
-    <Compile Include="IMarketRepository.cs" />
-    <Compile Include="InMemoryCustomerRepository.cs" />
-    <Compile Include="InMemoryMarketRepository.cs" />
-    <Compile Include="JsonCustomerRepository.cs" />
-    <Compile Include="JsonMarketRepository.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RSAExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WXT.SuperMarket.Data.Entities\WXT.SuperMarket.Data.Entities.csproj">
-      <Project>{ff4922a2-21f9-40b1-b905-8f88c8400b7f}</Project>
-      <Name>WXT.SuperMarket.Data.Entities</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WXT.SuperMarket.Business.Services\WXT.SuperMarket.Business.Services.csproj">
+      <Project>{efa54bba-4c15-48fe-855f-a1903b92d12b}</Project>
+      <Name>WXT.SuperMarket.Business.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
