@@ -5,9 +5,6 @@
     /// </summary>
     public class TransactionItem
     {
-        /// <summary>
-        /// Gets or sets the Id
-        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
