@@ -8,24 +8,12 @@
     using WXT.SuperMarket.Data.Entities;
     using WXT.SuperMarket.Data.Repository;
 
-    /// <summary>
-    /// Defines the <see cref="CustomerService" />
-    /// </summary>
     public class CustomerService
     {
-        /// <summary>
-        /// Defines the _customerRepository
-        /// </summary>
         private readonly ICustomerRepository _customerRepository = new JsonCustomerRepository();
 
-        /// <summary>
-        /// Defines the _marketRepository
-        /// </summary>
         private readonly IMarketRepository _marketRepository = new JsonMarketRepository();
 
-        /// <summary>
-        /// Defines the _myShoppingCart
-        /// </summary>
         private int ShoppingCartId { get; set; }
 
         private FileStream LockFile(string fileName)
@@ -59,12 +47,6 @@
             }
         }
 
-        /// <summary>
-        /// The RegisterNewCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <param name="passWord">The passWord<see cref="string"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public string RegisterNewCustomer(string userName, string passWord)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -94,11 +76,6 @@
             return result;
         }
 
-        /// <summary>
-        /// The DeleteCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <param name="passWord">The passWord<see cref="string"/></param>
         public void DeleteCustomer()
         {
             CheckLoginStatus();
@@ -111,11 +88,6 @@
             UnlockFile(locker);
         }
 
-        /// <summary>
-        /// The Login
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <param name="passWord">The passWord<see cref="string"/></param>
         public void Login(string userName, string passWord)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -138,19 +110,11 @@
             }
         }
 
-        /// <summary>
-        /// The Logout
-        /// </summary>
         public void Logout()
         {
             ShoppingCartId = 0;
         }
 
-        /// <summary>
-        /// The AddtoCart
-        /// </summary>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void AddtoCart(int productId, int count = 1)
         {
             CheckLoginStatus();
@@ -175,11 +139,6 @@
             UnlockFile(locker);
         }
 
-        /// <summary>
-        /// The TakeFromCart
-        /// </summary>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public int TakeFromCart(int productId, int count = 1)
         {
             CheckLoginStatus();
@@ -194,9 +153,6 @@
             return result;
         }
 
-        /// <summary>
-        /// The ClearCart
-        /// </summary>
         public void ClearCart()
         {
             CheckLoginStatus();
@@ -205,9 +161,6 @@
             UnlockFile(locker);
         }
 
-        /// <summary>
-        /// The CheckLoginStatus
-        /// </summary>
         private void CheckLoginStatus()
         {
             if (ShoppingCartId <= 0)
@@ -216,10 +169,6 @@
             }
         }
 
-        /// <summary>
-        /// The CheckOut
-        /// </summary>
-        /// <returns>The <see cref="string"/></returns>
         public string CheckOut()
         {
             CheckLoginStatus();
@@ -246,11 +195,6 @@
             return result;
         }
 
-        /// <summary>
-        /// The FindAllProduct
-        /// </summary>
-        /// <param name="isOnlyInStock">The isOnlyInStock<see cref="bool"/></param>
-        /// <returns>The <see cref="string"/></returns>
         public string FindAllProduct(bool isOnlyInStock)
         {
             return _marketRepository.FindAllProduct(isOnlyInStock);
