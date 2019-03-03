@@ -3,8 +3,15 @@
     using System;
     using WXT.SuperMarket.Business.Services;
 
+    /// <summary>
+    /// Defines the <see cref="Program" />
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// The Main
+        /// </summary>
+        /// <param name="args">The args<see cref="string[]"/></param>
         static void Main(string[] args)
         {
             MarketService marketService = new MarketService();
