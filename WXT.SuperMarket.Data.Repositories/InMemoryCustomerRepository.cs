@@ -135,7 +135,7 @@
         /// <summary>
         /// The AddToCart
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         /// <param name="productId">The productId<see cref="int"/></param>
         /// <param name="count">The count<see cref="int"/></param>
         public void AddToCart(int shoppingCartId, int productId, int count)
@@ -155,7 +155,7 @@
         /// <summary>
         /// The RemoveFromCart
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         /// <param name="productId">The productId<see cref="int"/></param>
         /// <param name="count">The count<see cref="int"/></param>
         /// <returns>The <see cref="int"/></returns>
@@ -179,7 +179,7 @@
         /// <summary>
         /// The ClearCart
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         public void ClearCart(int shoppingCartId)
         {
             FindShoppingCart(shoppingCartId).ItemList.Clear();
@@ -188,7 +188,7 @@
         /// <summary>
         /// The CheckOut
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         /// <returns>The <see cref="Receipt"/></returns>
         public Receipt CheckOut(int shoppingCartId)
         {

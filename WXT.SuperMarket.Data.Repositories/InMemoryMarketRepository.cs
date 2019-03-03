@@ -8,7 +8,7 @@
     /// <summary>
     /// Defines the <see cref="InMemoryMarketRepository" />
     /// </summary>
-    public class InMemoryMarketRepository: IMarketRepository
+    public class InMemoryMarketRepository : IMarketRepository
     {
         /// <summary>
         /// Defines the _products
@@ -29,7 +29,6 @@
             new ProductItem {ProductId = 2 , Count = 2},
             new ProductItem {ProductId = 3 , Count = 4}
         };
-
 
         /// <summary>
         /// The FindProduct
@@ -125,15 +124,20 @@
             }
         }
 
+        /// <summary>
+        /// The FindAllProduct
+        /// </summary>
+        /// <param name="isOnlyInStock">The isOnlyInStock<see cref="bool"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public string FindAllProduct(bool isOnlyInStock)
         {
             if (isOnlyInStock)
             {
-                return 
+                return
                     string.Join(Environment.NewLine, _stock.Join(_products,
                     item => item.ProductId,
                     product => product.Id,
-                    (item, product) => product.ToString()+ " Count = " +item.Count.ToString()));
+                    (item, product) => product.ToString() + " Count = " + item.Count.ToString()));
             }
             else
             {

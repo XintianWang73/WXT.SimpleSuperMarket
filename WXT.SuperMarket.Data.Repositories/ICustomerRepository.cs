@@ -59,7 +59,7 @@
         /// <summary>
         /// The RemoveFromCart
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         /// <param name="productId">The productId<see cref="int"/></param>
         /// <param name="count">The count<see cref="int"/></param>
         /// <returns>The <see cref="int"/></returns>
@@ -68,13 +68,13 @@
         /// <summary>
         /// The ClearCart
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         void ClearCart(int shoppingCartId);
 
         /// <summary>
         /// The CheckOut
         /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
+        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         /// <returns>The <see cref="Receipt"/></returns>
         Receipt CheckOut(int shoppingCartId);
 

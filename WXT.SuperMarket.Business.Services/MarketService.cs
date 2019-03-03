@@ -6,11 +6,22 @@
     using WXT.SuperMarket.Data.Entities;
     using WXT.SuperMarket.Data.Repository;
 
+    /// <summary>
+    /// Defines the <see cref="MarketService" />
+    /// </summary>
     public class MarketService
     {
         //private readonly IMarketRepository _marketRepository = new InMemoryMarketRepository();
+        /// <summary>
+        /// Defines the _marketRepository
+        /// </summary>
         private readonly IMarketRepository _marketRepository = new JsonMarketRepository();
 
+        /// <summary>
+        /// The LockFile
+        /// </summary>
+        /// <param name="fileName">The fileName<see cref="string"/></param>
+        /// <returns>The <see cref="FileStream"/></returns>
         private FileStream LockFile(string fileName)
         {
             while (true)
@@ -26,6 +37,10 @@
             }
         }
 
+        /// <summary>
+        /// The UnlockFile
+        /// </summary>
+        /// <param name="fileStream">The fileStream<see cref="FileStream"/></param>
         private void UnlockFile(FileStream fileStream)
         {
             while (true)
@@ -42,6 +57,12 @@
             }
         }
 
+        /// <summary>
+        /// The AddProduct
+        /// </summary>
+        /// <param name="name">The name<see cref="string"/></param>
+        /// <param name="price">The price<see cref="decimal"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public string AddProduct(string name, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -58,6 +79,10 @@
             return result;
         }
 
+        /// <summary>
+        /// The RemoveProduct
+        /// </summary>
+        /// <param name="productID">The productID<see cref="int"/></param>
         public void RemoveProduct(int productID)
         {
             var locker = LockFile("product.lk");
@@ -80,11 +105,21 @@
             UnlockFile(locker);
         }
 
+        /// <summary>
+        /// The FindAllProduct
+        /// </summary>
+        /// <param name="isOnlyInStock">The isOnlyInStock<see cref="bool"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public string FindAllProduct(bool isOnlyInStock)
         {
             return _marketRepository.FindAllProduct(isOnlyInStock);
         }
 
+        /// <summary>
+        /// The AddToStock
+        /// </summary>
+        /// <param name="id">The id<see cref="int"/></param>
+        /// <param name="count">The count<see cref="int"/></param>
         public void AddToStock(int id, int count = 1)
         {
             var locker = LockFile("product.lk");
@@ -104,6 +139,11 @@
             UnlockFile(locker);
         }
 
+        /// <summary>
+        /// The RemoveFromStock
+        /// </summary>
+        /// <param name="id">The id<see cref="int"/></param>
+        /// <param name="count">The count<see cref="int"/></param>
         public void RemoveFromStock(int id, int count = 1)
         {
             if (count <= 0)

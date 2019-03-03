@@ -1,24 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WXT.SuperMarket.Data.Entities;
-using Newtonsoft.Json;
-using System.IO;
-using System.Threading;
-
-namespace WXT.SuperMarket.Data.Repository
+﻿namespace WXT.SuperMarket.Data.Repository
 {
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using WXT.SuperMarket.Data.Entities;
+
+    /// <summary>
+    /// Defines the <see cref="JsonMarketRepository" />
+    /// </summary>
     public class JsonMarketRepository : IMarketRepository
     {
+        /// <summary>
+        /// Defines the _productFile
+        /// </summary>
         private const string _productFile = "products.json";
+
+        /// <summary>
+        /// Defines the _stockFile
+        /// </summary>
         private const string _stockFile = "stocks.json";
 
-        private static List<Product> _products; //e
+        /// <summary>
+        /// Defines the _products
+        /// </summary>
+        private static List<Product> _products;
 
-        private static List<ProductItem> _stock; //d
+        /// <summary>
+        /// Defines the _stock
+        /// </summary>
+        private static List<ProductItem> _stock;
 
+        /// <summary>
+        /// The GetProducts
+        /// </summary>
         private void GetProducts()
         {
             try
@@ -31,6 +47,9 @@ namespace WXT.SuperMarket.Data.Repository
             }
         }
 
+        /// <summary>
+        /// The GetStocks
+        /// </summary>
         private void GetStocks()
         {
             try
@@ -89,6 +108,11 @@ namespace WXT.SuperMarket.Data.Repository
             return product;
         }
 
+        /// <summary>
+        /// The SaveData
+        /// </summary>
+        /// <param name="o">The o<see cref="Object"/></param>
+        /// <param name="fileName">The fileName<see cref="string"/></param>
         private void SaveData(Object o, string fileName)
         {
             try
@@ -101,6 +125,7 @@ namespace WXT.SuperMarket.Data.Repository
                 Console.WriteLine(e.Message);
             }
         }
+
         /// <summary>
         /// The RemoveProduct
         /// </summary>
@@ -157,6 +182,11 @@ namespace WXT.SuperMarket.Data.Repository
             SaveData(_stock, _stockFile);
         }
 
+        /// <summary>
+        /// The FindAllProduct
+        /// </summary>
+        /// <param name="isOnlyInStock">The isOnlyInStock<see cref="bool"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public string FindAllProduct(bool isOnlyInStock)
         {
             GetProducts();

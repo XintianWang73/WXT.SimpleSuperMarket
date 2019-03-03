@@ -45,7 +45,7 @@
         private static List<Receipt> _receipts;
 
         /// <summary>
-        /// Defines the _shoppingCarts
+        /// The GetShoppingCarts
         /// </summary>
         private void GetShoppingCarts()
         {
@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        /// Defines the _customers
+        /// The GetCustomers
         /// </summary>
         private void GetCustomers()
         {
@@ -75,7 +75,7 @@
         }
 
         /// <summary>
-        /// Defines the _receipts
+        /// The GetReceipts
         /// </summary>
         private void GetReceipts()
         {
