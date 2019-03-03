@@ -15,9 +15,9 @@ namespace WXT.SuperMarket.Data.Repository
         private const string _productFile = "products.json";
         private const string _stockFile = "stocks.json";
 
-        private static List<Product> _products; //e
+        private static List<Product> _products;
 
-        private static List<ProductItem> _stock; //d
+        private static List<ProductItem> _stock;
 
         private void GetProducts()
         {
@@ -43,33 +43,18 @@ namespace WXT.SuperMarket.Data.Repository
             }
         }
 
-        /// <summary>
-        /// The FindProduct
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="Product"/></returns>
         public Product FindProduct(int id)
         {
             GetProducts();
             return _products.FirstOrDefault(p => p.Id == id);
         }
 
-        /// <summary>
-        /// The FindProduct
-        /// </summary>
-        /// <param name="productName">The productName<see cref="string"/></param>
-        /// <returns>The <see cref="Product"/></returns>
         public Product FindProduct(string productName)
         {
             GetProducts();
             return _products.FirstOrDefault(p => p.Name == productName);
         }
 
-        /// <summary>
-        /// The AddProduct
-        /// </summary>
-        /// <param name="product">The product<see cref="Product"/></param>
-        /// <returns>The <see cref="Product"/></returns>
         public Product AddProduct(Product product)
         {
             GetProducts();
@@ -101,10 +86,7 @@ namespace WXT.SuperMarket.Data.Repository
                 Console.WriteLine(e.Message);
             }
         }
-        /// <summary>
-        /// The RemoveProduct
-        /// </summary>
-        /// <param name="product">The product<see cref="Product"/></param>
+
         public void RemoveProduct(Product product)
         {
             GetProducts();
@@ -112,22 +94,12 @@ namespace WXT.SuperMarket.Data.Repository
             SaveData(_products, _productFile);
         }
 
-        /// <summary>
-        /// The GetStock
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="ProductItem"/></returns>
         public ProductItem GetStock(int id)
         {
             GetStocks();
             return _stock.FirstOrDefault(s => s.ProductId == id);
         }
 
-        /// <summary>
-        /// The AddToStock
-        /// </summary>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void AddToStock(int productId, int count)
         {
             var resultItem = GetStock(productId);
@@ -142,11 +114,6 @@ namespace WXT.SuperMarket.Data.Repository
             SaveData(_stock, _stockFile);
         }
 
-        /// <summary>
-        /// The RemoveFromStock
-        /// </summary>
-        /// <param name="productItem">The productItem<see cref="ProductItem"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void RemoveFromStock(ProductItem productItem, int count)
         {
             productItem.Count -= count;
@@ -179,11 +146,6 @@ namespace WXT.SuperMarket.Data.Repository
             }
         }
 
-        /// <summary>
-        /// The RemoveFromStock
-        /// </summary>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void RemoveFromStock(int productId, int count)
         {
             GetStocks();

@@ -9,44 +9,20 @@
     using System.Text;
     using WXT.SuperMarket.Data.Entities;
 
-    /// <summary>
-    /// Defines the <see cref="JsonCustomerRepository" />
-    /// </summary>
     public class JsonCustomerRepository : ICustomerRepository
     {
-        /// <summary>
-        /// Defines the _shoppingCartFile
-        /// </summary>
         private const string _shoppingCartFile = "shoppingCarts.json";
 
-        /// <summary>
-        /// Defines the _customerFile
-        /// </summary>
         private const string _customerFile = "customers.json";
 
-        /// <summary>
-        /// Defines the _receiptFile
-        /// </summary>
         private const string _receiptFile = "receipts.json";
 
-        /// <summary>
-        /// Defines the _shoppingCarts
-        /// </summary>
         private static List<ShoppingCart> _shoppingCarts;
 
-        /// <summary>
-        /// Defines the _customers
-        /// </summary>
         private static List<Customer> _customers;
 
-        /// <summary>
-        /// Defines the _receipts
-        /// </summary>
         private static List<Receipt> _receipts;
 
-        /// <summary>
-        /// Defines the _shoppingCarts
-        /// </summary>
         private void GetShoppingCarts()
         {
             try
@@ -59,9 +35,6 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _customers
-        /// </summary>
         private void GetCustomers()
         {
             try
@@ -74,9 +47,6 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _receipts
-        /// </summary>
         private void GetReceipts()
         {
             try
@@ -89,16 +59,8 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _marketRepository
-        /// </summary>
         private static readonly IMarketRepository _marketRepository = new JsonMarketRepository();
 
-        /// <summary>
-        /// The AddCustomer
-        /// </summary>
-        /// <param name="customer">The customer<see cref="Customer"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer AddCustomer(Customer customer)
         {
             GetCustomers();
@@ -128,11 +90,6 @@
             return customer;
         }
 
-        /// <summary>
-        /// The SaveData
-        /// </summary>
-        /// <param name="o">The o<see cref="Object"/></param>
-        /// <param name="fileName">The fileName<see cref="string"/></param>
         private void SaveData(Object o, string fileName)
         {
             try
@@ -146,12 +103,6 @@
             }
         }
 
-        /// <summary>
-        /// The CustomerValidity
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <param name="password">The password<see cref="string"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer CustomerValidity(string userName, string password)
         {
             GetCustomers();
@@ -159,43 +110,24 @@
             return _customers.FirstOrDefault(c => c.UserName == userName && c.PassWord == password);
         }
 
-        /// <summary>
-        /// The FindShoppingCart
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="ShoppingCart"/></returns>
         public ShoppingCart FindShoppingCart(int id)
         {
             GetShoppingCarts();
             return _shoppingCarts.FirstOrDefault(s => s.CustomerId == id);
         }
 
-        /// <summary>
-        /// The FindCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer FindCustomer(string userName)
         {
             GetCustomers();
             return _customers.FirstOrDefault(c => c.UserName == userName);
         }
 
-        /// <summary>
-        /// The FindCustomer
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         private Customer FindCustomer(int id)
         {
             GetCustomers();
             return _customers.FirstOrDefault(c => c.Id == id);
         }
 
-        /// <summary>
-        /// The DeleteCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
         public void DeleteCustomer(string userName)
         {
             var customer = FindCustomer(userName);
@@ -209,10 +141,6 @@
             }
         }
 
-        /// <summary>
-        /// The DeleteCustomer
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
         public void DeleteCustomer(int id)
         {
             var customer = FindCustomer(id);
@@ -226,12 +154,6 @@
             }
         }
 
-        /// <summary>
-        /// The AddToCart
-        /// </summary>
-        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void AddToCart(int shoppingCartId, int productId, int count)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -247,13 +169,6 @@
             SaveData(_shoppingCarts, _shoppingCartFile);
         }
 
-        /// <summary>
-        /// The RemoveFromCart
-        /// </summary>
-        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
-        /// <returns>The <see cref="int"/></returns>
         public int RemoveFromCart(int shoppingCartId, int productId, int count)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -272,10 +187,6 @@
             return realCount;
         }
 
-        /// <summary>
-        /// The ClearCart
-        /// </summary>
-        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
         public void ClearCart(int shoppingCartId)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -283,11 +194,6 @@
             SaveData(_shoppingCarts, _shoppingCartFile);
         }
 
-        /// <summary>
-        /// The CheckOut
-        /// </summary>
-        /// <param name="shoppingCartId">The shoppingCartId<see cref="int"/></param>
-        /// <returns>The <see cref="Receipt"/></returns>
         public Receipt CheckOut(int shoppingCartId)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -316,11 +222,6 @@
             return AddNewReceipt(receipt);
         }
 
-        /// <summary>
-        /// The AddNewReceipt
-        /// </summary>
-        /// <param name="receipt">The receipt<see cref="Receipt"/></param>
-        /// <returns>The <see cref="Receipt"/></returns>
         public Receipt AddNewReceipt(Receipt receipt)
         {
             GetReceipts();

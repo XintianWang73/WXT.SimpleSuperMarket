@@ -7,36 +7,16 @@
     using System.Text;
     using WXT.SuperMarket.Data.Entities;
 
-    /// <summary>
-    /// Defines the <see cref="InMemoryCustomerRepository" />
-    /// </summary>
     public class InMemoryCustomerRepository : ICustomerRepository
     {
-        /// <summary>
-        /// Defines the _shoppingCarts
-        /// </summary>
         private static readonly List<ShoppingCart> _shoppingCarts = new List<ShoppingCart>();
 
-        /// <summary>
-        /// Defines the _customers
-        /// </summary>
         private static readonly List<Customer> _customers = new List<Customer>();
 
-        /// <summary>
-        /// Defines the _receipts
-        /// </summary>
         private static readonly List<Receipt> _receipts = new List<Receipt>();
 
-        /// <summary>
-        /// Defines the _marketRepository
-        /// </summary>
         private static readonly IMarketRepository _marketRepository = new InMemoryMarketRepository();
 
-        /// <summary>
-        /// The AddCustomer
-        /// </summary>
-        /// <param name="customer">The customer<see cref="Customer"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer AddCustomer(Customer customer)
         {
             int maxId = 0;
@@ -63,51 +43,26 @@
             return customer;
         }
 
-        /// <summary>
-        /// The CustomerValidity
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <param name="password">The password<see cref="string"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer CustomerValidity(string userName, string password)
         {
             return _customers.FirstOrDefault(c => c.UserName == userName && c.PassWord == password);
         }
 
-        /// <summary>
-        /// The FindShoppingCart
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="ShoppingCart"/></returns>
         public ShoppingCart FindShoppingCart(int id)
         {
             return _shoppingCarts.FirstOrDefault(s => s.CustomerId == id);
         }
 
-        /// <summary>
-        /// The FindCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         public Customer FindCustomer(string userName)
         {
             return _customers.FirstOrDefault(c => c.UserName == userName);
         }
 
-        /// <summary>
-        /// The FindCustomer
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
-        /// <returns>The <see cref="Customer"/></returns>
         private Customer FindCustomer(int id)
         {
             return _customers.FirstOrDefault(c => c.Id == id);
         }
 
-        /// <summary>
-        /// The DeleteCustomer
-        /// </summary>
-        /// <param name="userName">The userName<see cref="string"/></param>
         public void DeleteCustomer(string userName)
         {
             var customer = FindCustomer(userName);
@@ -118,10 +73,6 @@
             }
         }
 
-        /// <summary>
-        /// The DeleteCustomer
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/></param>
         public void DeleteCustomer(int id)
         {
             var customer = FindCustomer(id);
@@ -132,12 +83,6 @@
             }
         }
 
-        /// <summary>
-        /// The AddToCart
-        /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
         public void AddToCart(int shoppingCartId, int productId, int count)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -152,13 +97,6 @@
             }
         }
 
-        /// <summary>
-        /// The RemoveFromCart
-        /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
-        /// <param name="productId">The productId<see cref="int"/></param>
-        /// <param name="count">The count<see cref="int"/></param>
-        /// <returns>The <see cref="int"/></returns>
         public int RemoveFromCart(int shoppingCartId, int productId, int count)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -176,20 +114,11 @@
             return realCount;
         }
 
-        /// <summary>
-        /// The ClearCart
-        /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
         public void ClearCart(int shoppingCartId)
         {
             FindShoppingCart(shoppingCartId).ItemList.Clear();
         }
 
-        /// <summary>
-        /// The CheckOut
-        /// </summary>
-        /// <param name="shoppingCart">The shoppingCart<see cref="ShoppingCart"/></param>
-        /// <returns>The <see cref="Receipt"/></returns>
         public Receipt CheckOut(int shoppingCartId)
         {
             var shoppingCart = FindShoppingCart(shoppingCartId);
@@ -217,11 +146,6 @@
             return AddNewReceipt(receipt);
         }
 
-        /// <summary>
-        /// The AddNewReceipt
-        /// </summary>
-        /// <param name="receipt">The receipt<see cref="Receipt"/></param>
-        /// <returns>The <see cref="Receipt"/></returns>
         public Receipt AddNewReceipt(Receipt receipt)
         {
             int maxId = 0;

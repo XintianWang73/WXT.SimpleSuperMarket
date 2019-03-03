@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WXT.SuperMarket.Data.Entities;
-
-namespace WXT.SuperMarket.Data.Repository
+﻿namespace WXT.SuperMarket.Data.Repository
 {
+    using WXT.SuperMarket.Data.Entities;
+
     public interface IMarketRepository
     {
         Product FindProduct(int id);
